@@ -1,57 +1,32 @@
-pipeline
+ node('built-in')
 {
-    agent any
-    stages
+    stage('ContinuousDownload')
     {
-        stage('ContinuousDownload')
-        {
-            steps
-            {
-                git 'https://github.com/intelliqittrainings/maven.git'
-            }
-        }
-        stage('ContinuousBuild')
-        {
-            steps
-            {
-                sh 'mvn package'
-            }
-        }
-        stage('ContinuousDeployment')
-        {
-            steps
-            {
-               deploy adapters: [tomcat9(credentialsId: 'bfb67f1d-2f4e-430c-bb8d-30584116bd00', path: '', url: 'http://172.31.51.212:9090')], contextPath: 'test1', war: '**/*.war'
-            }
-        }
-        stage('ContinuousTesting')
-        {
-            steps
-            {
-               git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
-               sh 'java -jar /home/ubuntu/.jenkins/workspace/DeclarativePipeline1/testing.jar'
-            }
-        }
-       
+        git 'https://github.com/Devopsad4/Dec02.git'
     }
-    
-    post
+    stage('COntinuousBuild')
     {
-        success
-        {
-            input message: 'Need approval from the DM!', submitter: 'srinivas'
-               deploy adapters: [tomcat9(credentialsId: 'bfb67f1d-2f4e-430c-bb8d-30584116bd00', path: '', url: 'http://172.31.50.204:9090')], contextPath: 'prod1', war: '**/*.war'
-        }
-        failure
-        {
-            mail bcc: '', body: 'Continuous Integration has failed', cc: '', from: '', replyTo: '', subject: 'CI Failed', to: 'selenium.saikrishna@gmail.com'
-        }
-       
+        sh 'mvn package'
     }
-    
-    
+    stage('ContinuosDeploy')
+    {
+        deploy adapters: [tomcat9(credentialsId: '4e6845e2-1324-4996-b81f-3ed0f969f95e', path: '', url: 'http://172.31.80.197:8080')], contextPath: 'testapp', war: '**/*.war'
+    }
+    stage('ContinuousTesting')
+    {
+        git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+        sh 'java -jar /home/ubuntu/.jenkins/workspace/spt/testing.jar'
+    }
+    stage('ContinuousDelivery')
+    {
+        input message: 'Need aprroval form the DM', submitter: 'Sri swami samarth'
+        deploy adapters: [tomcat9(credentialsId: '4e6845e2-1324-4996-b81f-3ed0f969f95e', path: '', url: 'http://172.31.84.117:8080')], contextPath: 'prodapp', war: '**/*.war'
+    }
+
     
     
     
     
 }
+
+
