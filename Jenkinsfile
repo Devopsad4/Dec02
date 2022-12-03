@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 pipeline
 =======
 ipipeline
 >>>>>>> f2f0853 (jenkiE)
+=======
+pipeline
+>>>>>>> 4a31f89 (fd)
 {
     agent any
     stages
