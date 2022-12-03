@@ -47,7 +47,7 @@ pipeline
     
 }
 
-=======
+
         stage('COntinuousDownload')
         {
             steps
@@ -154,4 +154,3 @@ pipeline
         
     }
 }
->>>>>>> f2f0853 (jenkiE)
